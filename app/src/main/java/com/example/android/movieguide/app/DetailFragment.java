@@ -304,11 +304,7 @@ boolean btnFavState = false;
             try {
 
 
-                // Construct the URL for the moviedb query
-
-                //http://api.themoviedb.org/3/movie/140607/videos?api_key=00000000000000000000000
-
-
+                //
                 final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/movie";
 
                 final String APPID_PARAM = "api_key";
@@ -319,8 +315,6 @@ boolean btnFavState = false;
                         .build();
 
                 URL url = new URL(builtUri.toString());
-                Log.v(LOG_TAG, "http://api.themoviedb.org/3/movie/209112/videos?api_key=dee364a81187df2c66fa2851bb30b111");
-                Log.v(LOG_TAG, "Built URI " + builtUri.toString());
 
 
                 urlConnection = (HttpURLConnection) url.openConnection();
