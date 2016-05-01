@@ -7,12 +7,38 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements Callback{
+
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+    boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (findViewById(R.id.container) != null) {
+
+            mTwoPane = true;
+        }
+            else
+            { mTwoPane = false; }
+
+        MoviesFragment mFragment;
+        if (savedInstanceState == null) {
+           mFragment = new MoviesFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, mFragment, "myFrag").commit();
+        }else{
+            mFragment = (MoviesFragment) getSupportFragmentManager().findFragmentByTag("myFrag");
+        }
+        mFragment.setListener(this);
+
+
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.capperboard);
+
+
     }
 
 
@@ -38,4 +64,35 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void respond(MovieInfo mov) {
+
+        if (mTwoPane) {
+
+
+            Bundle args= new Bundle();
+            args.putParcelable("MovieInfo", mov);
+            DetailFragment dFragment= new DetailFragment();
+            dFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,dFragment).commit();
+
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra("MovieInfo", mov);
+            startActivity(intent);
+        }
+    }
 }
+
+
+//DetailFragment dfragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+//dfragment.getData(mov);
+//        Intent i = this.getIntent();
+//        mov = (MovieInfo) i.getParcelableExtra("com.example.android.movieguide.app.MovieInfo");
+////startActivity(i);

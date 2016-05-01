@@ -21,7 +21,7 @@ public class MoviesContract {
         public static final String COLUMN_POPULARITY = "Popularity";
         public static final String  COLUMN_VOTECOUNT = "VoteCount";
 
-        public static  final String COLUMN_IS_FAVORITE = "Is_Favorite?";
+        public static  final String COLUMN_IS_FAVORITE = "Is_Favorite";
 
     }
 

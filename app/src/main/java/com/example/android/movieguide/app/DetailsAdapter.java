@@ -18,7 +18,8 @@ public class DetailsAdapter extends ArrayAdapter<Reviews>{
     //ArrayList<Reviews> movieReviews;
 
 
-    public DetailsAdapter(Context context, ArrayList<Reviews> users) {
+    public DetailsAdapter(Context context, ArrayList<Reviews> users)
+    {
         super(context, 0, users);
     }
 
@@ -34,7 +35,7 @@ public class DetailsAdapter extends ArrayAdapter<Reviews>{
 
         ((TextView) convertView.findViewById(R.id.author_textview)).setText(mReview.author);
        ((TextView) convertView.findViewById(R.id.content_textview)).setText(mReview.content);
-        ((TextView) convertView.findViewById(R.id.urlLink_textview)).setText(mReview.urlLink);
+//        ((TextView) convertView.findViewById(R.id.urlLink_textview)).setText(mReview.urlLink);
 
         return  convertView;
     }

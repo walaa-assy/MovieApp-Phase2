@@ -20,7 +20,6 @@ public class MovieInfo implements Parcelable {
     private double moviePopularity;
     private String movieLanguage;
     private boolean movieVideo;
-
     private String movieTrailerKey;
     private String movieReviewURL;
 
@@ -45,68 +44,84 @@ public class MovieInfo implements Parcelable {
         this.movieVoteCount = votesCount;
     }
 
-    public MovieInfo(){
+    public MovieInfo() {
 
     }
 
 
-    public  void setMovieID(String id){
-        this.movieID = id;
-    }
 
-    public void  setMovieTrailerKey(String key)
-    {
-        this.movieTrailerKey = key;
-    }
 
-    public void  setMovieReviewURL(String url)
-    {
+
+
+
+    public void setMovieReviewURL(String url) {
         this.movieReviewURL = url;
     }
+
     // getters for all movie properties
     public String getMovieId() {
         return movieID;
     }
 
+
+    public void setMovieID(String id) {
+        this.movieID = id;
+    }
+
+    public void setMovieTitle(String title) {this.movieTitle = title;}
+
     public String getTitle() {
         return movieTitle;
     }
+
+    public void setMovieOverview(String overview){this.movieOverview = overview;}
 
     public String getOverview() {
         return movieOverview;
     }
 
-
+public void setMoviePoster(String poster) {this.moviePoster =  BASE_IMAGE_URL + POSTER_SIZE +poster ; }
     public String getPosterPath() {
         return BASE_IMAGE_URL + POSTER_SIZE + moviePoster;
     }
 
-    public  String getBackdropPath(){
+    public void setMovieBackdrop(String backdrop) {this.moviePoster =  BASE_IMAGE_URL + BACKDROP_SIZE + backdrop ; }
+    public String getBackdropPath() {
         return BASE_IMAGE_URL + BACKDROP_SIZE + movieBackdrop;
     }
 
-    public  String getDetailPoster(){ return BASE_IMAGE_URL + DETAIL_POSTER_SIZE + moviePoster; }
+    public void setDetailPoster(String poster) {
+       this.moviePoster = BASE_IMAGE_URL + DETAIL_POSTER_SIZE + poster;
+    }
 
+    public String getDetailPoster() {
+        return BASE_IMAGE_URL + DETAIL_POSTER_SIZE + moviePoster;
+    }
+
+
+    public void  setMovieReleaseDate(String releaseDate){this.movieReleaseDate = releaseDate;}
     public String getReleaseDate() {
-
-
         return movieReleaseDate;
     }
 
-    public double getVoteAverage(){
-        return  movieVoteAverage;
+    public void setMovieVoteAverage(double voteAverage){this.movieVoteAverage = voteAverage;}
+    public double getVoteAverage() {
+        return movieVoteAverage ;
     }
 
-    public double getPopularity(){
-        return  moviePopularity;
+    public double getPopularity() {
+        return moviePopularity;
+    }
+    public void setMoviePopularity(double popularity) {this.moviePopularity = popularity;}
+
+
+    public  void setMovieVoteCount(double voteCount) {this.movieVoteCount = voteCount;}
+    public double getVoteCount() {
+        return movieVoteCount;
     }
 
-
-    public double getVoteCount(){
-        return  movieVoteCount;
-    }
-
-    public String getTrailerURL(){
+    public void setTRailerUrl(String key) {this.movieTrailerKey = key;}
+    public String getTrailerURL() {
         return BASE_TARILER_URL + movieTrailerKey;
     }
 
@@ -136,8 +151,10 @@ public class MovieInfo implements Parcelable {
         dest.writeString(movieOverview);
         dest.writeString(moviePoster);
         dest.writeString(movieBackdrop);
+        dest.writeString(movieReleaseDate);
         dest.writeDouble(movieVoteAverage);
         dest.writeDouble(moviePopularity);
+        dest.writeDouble(movieVoteCount);
         dest.writeString(movieLanguage);
         dest.writeString(String.valueOf(movieVideo));
         dest.writeString(movieTrailerKey);
@@ -157,7 +174,7 @@ public class MovieInfo implements Parcelable {
     };
 
     // "De-parcel object
-    private MovieInfo (Parcel in){
+    private MovieInfo(Parcel in) {
         this.movieID = in.readString();
         this.movieTitle = in.readString();
         this.movieOverview = in.readString();
@@ -166,6 +183,7 @@ public class MovieInfo implements Parcelable {
         this.movieReleaseDate = in.readString();
         this.movieVoteAverage = in.readDouble();
         this.moviePopularity = in.readDouble();
+        this.movieVoteCount = in.readDouble();
         this.movieLanguage = in.readString();
         this.movieVideo = Boolean.parseBoolean(in.readString());
         this.movieTrailerKey = in.readString();
