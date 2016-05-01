@@ -47,7 +47,7 @@ public class MoviesFragment extends Fragment {
     private String sorting;
     MovieAdapter favoriteAdapter;
 
-    ArrayList<MovieInfo> favorites;
+//    ArrayList<MovieInfo> favorites;
 
     Callback comm;
 
@@ -77,19 +77,7 @@ public class MoviesFragment extends Fragment {
             updateMovies();
             return true;
         }
-        else if (id == R.id.action_favorites){
 
-            favorites = new ArrayList<>();
-            MoviesDBHelper helper = new MoviesDBHelper(getActivity());
-            helper.getReadableDatabase();
-            favorites = (ArrayList<MovieInfo>) helper.getFAVORITEMOVIES();
-
-            MovieAdapter favoriteAdapter= new MovieAdapter(getActivity(), favorites);
-
-            gridview.setAdapter(favoriteAdapter);
-           //displayFavoriteMovies();
-            sorting = "favorites";
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -203,7 +191,8 @@ public class MoviesFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sorting = prefs.getString(getString(R.string.pref_sorting_key), getString(R.string.pref_sorting_most_popular));
         if (sorting.equals("favorites")) {
-           // ArrayList<MovieInfo> favorites = new ArrayList<>();
+
+            ArrayList<MovieInfo> favorites = new ArrayList<>();
             MoviesDBHelper helper = new MoviesDBHelper(getActivity());
             helper.getReadableDatabase();
             favorites = (ArrayList<MovieInfo>) helper.getFAVORITEMOVIES();
