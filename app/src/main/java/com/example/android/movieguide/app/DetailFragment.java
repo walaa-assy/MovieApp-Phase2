@@ -76,11 +76,11 @@ boolean btnFavState = false;
 
 
 
-    public void insertFavoriteMovies() {
+    public void insertFavoriteMovies(MovieInfo movie) {
 
         MoviesDBHelper helper = new MoviesDBHelper(getActivity());
         helper.getWritableDatabase();
-        if (helper.addFAVORITEMOVIES(m) != -1) {
+        if (helper.addFAVORITEMOVIES(movie) != -1) {
             Toast.makeText(getActivity(), "successfully added", Toast.LENGTH_LONG).show();
         }
     }
@@ -173,6 +173,8 @@ boolean btnFavState = false;
             }
         });
 
+      //  ImageButton favStar = (ImageButton) rootView.findViewById(R.id.fav_star);
+
         final Button addFAV = (Button) rootView.findViewById(R.id.fav_button);
         if (btnFavState==true)
         { addFAV.setText("already a favorite");
@@ -181,14 +183,18 @@ boolean btnFavState = false;
               addFAV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnFavState == true)
-                    return;
-                else {
-                    insertFavoriteMovies();
-                    btnFavState = true;
+                MoviesDBHelper helper = new MoviesDBHelper(getActivity());
+                helper.getReadableDatabase();
+                if (helper.checkMovieExists(m)){
+
+                    Toast.makeText(getActivity(), " Already A Favorite", Toast.LENGTH_SHORT).show();
+                    return; }
+                else  {
+                    insertFavoriteMovies(m);
                     addFAV.setText("already a favorite");
                     addFAV.setBackgroundResource(R.drawable.orange);
                 }
+
             }
         });
 
@@ -304,7 +310,7 @@ boolean btnFavState = false;
             try {
 
 
-                //
+
                 final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/movie";
 
                 final String APPID_PARAM = "api_key";

@@ -81,6 +81,9 @@
             android:background="@drawable/stop"
             android:text="Mark as Favorite"
             android:textColor="#FFFFFF" />
+
+
+
         <Button
             android:id="@+id/reviews_button"
             android:layout_width="100dp"

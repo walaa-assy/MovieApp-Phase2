@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.android.movieguide.app.MovieInfo;
 
@@ -51,6 +52,22 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         long ret = db.insert("FAVORITEMOVIES", null, values);
         db.close();
         return ret;
+    }
+
+    public boolean checkMovieExists(MovieInfo movie){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query ="select * from FAVORITEMOVIES where " + MoviesContract.FAVORITEMOVIES.COLUMN_MovieID + " = " + movie.getMovieId() ;
+        Cursor cur = db.rawQuery("select * from FAVORITEMOVIES where " + MoviesContract.FAVORITEMOVIES.COLUMN_MovieID + " = " + movie.getMovieId(), null);
+        Log.v(" checklog" , query);
+        if (cur.getCount() == 0) {
+            cur.close();
+            return false;
+        }
+        else {
+            cur.close();
+            return true;
+        }
+
     }
 
 
