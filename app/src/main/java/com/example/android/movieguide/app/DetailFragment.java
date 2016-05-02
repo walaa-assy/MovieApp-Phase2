@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -41,11 +43,11 @@ import java.util.concurrent.ExecutionException;
 /**
  * A placeholder fragment containing a simple view.
  */
-public  class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment {
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
-  //  private int mActivatedPosition = GridView.INVALID_POSITION;
-  private int mActivatedPosition = 0;
-          MovieInfo m;
+    //  private int mActivatedPosition = GridView.INVALID_POSITION;
+    private int mActivatedPosition = 0;
+    MovieInfo m;
 
     public static final String MOVIE_BUNDLE = "MovieInfo";
 
@@ -54,10 +56,9 @@ public  class DetailFragment extends Fragment {
     private static final String SHARE_HASHTAG = " #MovieguideApp";
 
 
+    ArrayList<ExtraBase> TrailersList;
 
-   ArrayList<ExtraBase> TrailersList;
-
-boolean btnFavState = false;
+    boolean btnFavState = false;
 
 
     public DetailFragment() {
@@ -73,7 +74,6 @@ boolean btnFavState = false;
         }
 
     }
-
 
 
     public void insertFavoriteMovies(MovieInfo movie) {
@@ -92,13 +92,12 @@ boolean btnFavState = false;
         ShareActionProvider mShareActionProvider =
                 (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
-        if (mShareActionProvider != null ) {
+        if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(createShareTrailerIntent());
         } else {
             Log.d(LOG_TAG, "Share Action Provider is null?");
         }
     }
-
 
 
     @Override
@@ -109,9 +108,7 @@ boolean btnFavState = false;
         Bundle arguments = getArguments();
         if (arguments != null) {
             m = arguments.getParcelable(MOVIE_BUNDLE);
-        }
-
-        else {
+        } else {
             Intent i = getActivity().getIntent();
             m = (MovieInfo) i.getParcelableExtra(MOVIE_BUNDLE);
         }
@@ -146,7 +143,6 @@ boolean btnFavState = false;
         voteRatingBar.setRating(fVote);
 
 
-
         FetchTrailersTask trailerTask = new FetchTrailersTask();
         trailerTask.execute(number);
         try {
@@ -158,7 +154,7 @@ boolean btnFavState = false;
         }
         ArrayList<ExtraBase> t = new ArrayList<>();
         ListView tListView = (ListView) rootView.findViewById(R.id.trailers_listview);
-       cAdapter = new CommonAdapter(getActivity(), t);
+        cAdapter = new CommonAdapter(getActivity(), t);
 
         //Toast.makeText(getActivity(), uu, Toast.LENGTH_LONG).show();
         tListView.setAdapter(cAdapter);
@@ -173,64 +169,74 @@ boolean btnFavState = false;
             }
         });
 
-      //  ImageButton favStar = (ImageButton) rootView.findViewById(R.id.fav_star);
 
-        final Button addFAV = (Button) rootView.findViewById(R.id.fav_button);
-        if (btnFavState==true)
-        { addFAV.setText("already a favorite");
-            addFAV.setBackgroundResource(R.drawable.orange);}
 
-              addFAV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+            final Button addFAV = (Button) rootView.findViewById(R.id.fav_button);
+            if(btnFavState==true)
+
+            {
+                addFAV.setText("already a favorite");
+                addFAV.setBackgroundResource(R.drawable.dontstop);
+            }
+
+            addFAV.setOnClickListener(new View.OnClickListener()
+
+            {
+                @Override
+                public void onClick (View v){
                 MoviesDBHelper helper = new MoviesDBHelper(getActivity());
                 helper.getReadableDatabase();
-                if (helper.checkMovieExists(m)){
+                if (helper.checkMovieExists(m)) {
 
                     Toast.makeText(getActivity(), " Already A Favorite", Toast.LENGTH_SHORT).show();
-                    return; }
-                else  {
+                    return;
+                } else {
                     insertFavoriteMovies(m);
-                    addFAV.setText("already a favorite");
-                    addFAV.setBackgroundResource(R.drawable.orange);
+                    addFAV.setText("Added to favorites");
+                    addFAV.setBackgroundResource(R.drawable.dontstop);
                 }
 
             }
-        });
+            }
 
-        final Button btnReviews = (Button) rootView.findViewById(R.id.reviews_button);
-    btnReviews.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Intent i = new Intent(getActivity(), ReviewsActivity.class);
+            );
+
+            final Button btnReviews = (Button) rootView.findViewById(R.id.reviews_button);
+            btnReviews.setOnClickListener(new View.OnClickListener()
+
+            {
+                @Override
+                public void onClick (View v){
+                Intent i = new Intent(getActivity(), ReviewsActivity.class);
                 i.putExtra(MOVIE_BUNDLE, m);
                 startActivity(i);
-    }
-});
+            }
+            }
 
-        return rootView;
-    }
+            );
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(MOVIE_BUNDLE, m);
-        super.onSaveInstanceState(outState);
-    }
+            return rootView;
+        }
+
+        @Override
+        public void onSaveInstanceState (Bundle outState){
+            outState.putParcelable(MOVIE_BUNDLE, m);
+            super.onSaveInstanceState(outState);
+        }
 
     private Intent createShareTrailerIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-       shareIntent.setType("text/plain");
+        shareIntent.setType("text/plain");
         String shareStr = m.getTitle();
         String tURL = TrailersList.get(0).getKey();
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareStr + " \n" +" TRAILER" +" \n" + tURL+" \n" + SHARE_HASHTAG);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareStr + " \n" + " TRAILER" + " \n" + tURL + " \n" + SHARE_HASHTAG);
         return shareIntent;
     }
 
 
-
     public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<ExtraBase>> {
-
 
 
         private final String LOG_TAG = FetchTrailersTask.class.getSimpleName();
@@ -308,7 +314,6 @@ boolean btnFavState = false;
 
 
             try {
-
 
 
                 final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/movie";

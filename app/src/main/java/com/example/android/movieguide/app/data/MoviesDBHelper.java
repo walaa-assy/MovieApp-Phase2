@@ -54,10 +54,17 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         return ret;
     }
 
+    public int unFavoriteMovie(MovieInfo movie){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(MoviesContract.FAVORITEMOVIES.TABLE_NAME ,
+               " where " + MoviesContract.FAVORITEMOVIES.COLUMN_MovieID + " = " + movie.getMovieId()
+                ,new String[]{MoviesContract.FAVORITEMOVIES.COLUMN_MovieID,movie.getMovieId()});
+    }
+
     public boolean checkMovieExists(MovieInfo movie){
         SQLiteDatabase db = this.getReadableDatabase();
         String query ="select * from FAVORITEMOVIES where " + MoviesContract.FAVORITEMOVIES.COLUMN_MovieID + " = " + movie.getMovieId() ;
-        Cursor cur = db.rawQuery("select * from FAVORITEMOVIES where " + MoviesContract.FAVORITEMOVIES.COLUMN_MovieID + " = " + movie.getMovieId(), null);
+        Cursor cur = db.rawQuery("select * from FAVORITEMOVIES where " + MoviesContract.FAVORITEMOVIES.COLUMN_MovieID + " = " + movie.getMovieId(), null) ;
         Log.v(" checklog" , query);
         if (cur.getCount() == 0) {
             cur.close();
