@@ -16,8 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -183,8 +181,10 @@ public class DetailFragment extends Fragment {
             addFAV.setOnClickListener(new View.OnClickListener()
 
             {
+
                 @Override
                 public void onClick (View v){
+
                 MoviesDBHelper helper = new MoviesDBHelper(getActivity());
                 helper.getReadableDatabase();
                 if (helper.checkMovieExists(m)) {
@@ -196,11 +196,10 @@ public class DetailFragment extends Fragment {
                     addFAV.setText("Added to favorites");
                     addFAV.setBackgroundResource(R.drawable.dontstop);
                 }
-
             }
             }
-
             );
+
 
             final Button btnReviews = (Button) rootView.findViewById(R.id.reviews_button);
             btnReviews.setOnClickListener(new View.OnClickListener()
